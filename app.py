@@ -1,7 +1,7 @@
 import math
 from serial import Serial
+import json
 
-POSITION_RADIUS_M = 100
 
 class Point:
     def __init__(self, x, y, address="TAG"):
@@ -9,15 +9,6 @@ class Point:
         self.y = y
         self.address = address
         self.is_observed = False
-
-    def is_around(self, another):
-        distanceDEG = math.acos((math.sin(another.x) * math.sin(self.x)) + (math.cos(another.x) * math.cos(self.x) * math.cos(abs(another.y - self.y))) )
-        distanceNM = distanceDEG * 60
-        distance = distanceNM * 1852
-        if (distance > POSITION_RADIUS_M):
-            return False
-        else:
-            return True
 
 def gps_data_to_point(data):
     lat_raw = data[2]
@@ -51,6 +42,17 @@ def get_position():
             pass
 pos = get_position()
 
+user_input = ""
+points = []
 
-print(print(pos.x))
-print(print(pos.y))
+while True:
+    user_input = input("Please input device address, q to quit\n")
+    if(user_input == "q"):
+        break
+    gps_point = get_position()
+    point = {'x': gps_point.x, 'y': gps_point.y, "address": user_input}
+    points.append(point)
+
+points_json = json.dumps(points)
+
+print(points_json)
