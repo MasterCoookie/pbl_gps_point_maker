@@ -2,6 +2,7 @@ import math
 from serial import Serial
 import json
 
+com_port = input("Please inpunt serial path\n")
 
 class Point:
     def __init__(self, x, y, address="TAG"):
@@ -32,7 +33,7 @@ def gps_data_to_point(data):
     return Point(lat, long)
 
 def get_position():
-    gps_serial = Serial("com10")
+    gps_serial = Serial(com_port)
     while (True):
         try:
             line = str(gps_serial.readline(), encoding="ASCII")
