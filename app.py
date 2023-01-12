@@ -55,6 +55,10 @@ while True:
     point = {'x': gps_point.x, 'y': gps_point.y, "address": user_input}
     points.append(point)
 
-points_json = json.dumps(points)
+points_json = json.dumps(points, indent=3)
+
+with open('GPSdata.json', 'w') as outfile:
+    outfile.write(points_json)
+    
 
 print(points_json)
