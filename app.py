@@ -18,6 +18,7 @@ def gps_data_to_point(data):
     sign_lat = data[3]
     if sign_lat == "S":
         lat *= -1
+    lat = round(lat, 6)
 
     long_raw = data[4]
     long_deg = float(long_raw[0:3])
@@ -26,6 +27,7 @@ def gps_data_to_point(data):
     long_sign = data[5]
     if long_sign == "W":
         long *= -1
+    long = round(long, 6)    
 
     return Point(lat, long)
 
