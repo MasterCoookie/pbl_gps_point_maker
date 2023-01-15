@@ -2,7 +2,7 @@ import math
 from serial import Serial
 import json
 
-com_port = input("Please inpunt serial path\n")
+
 
 class Point:
     def __init__(self, x, y, address="TAG"):
@@ -43,23 +43,26 @@ def get_position():
                 return(gps_data_to_point(data))
         except(UnicodeDecodeError):
             pass
-pos = get_position()
 
-user_input = ""
-points = []
+if __name__ == "__main__":
 
-while True:
-    user_input = input("Please input device address, q to quit\n")
-    if(user_input == "q"):
-        break
-    gps_point = get_position()
-    point = {'x': gps_point.x, 'y': gps_point.y, "address": user_input}
-    points.append(point)
+    user_input = ""
+    points = []
 
-points_json = json.dumps(points, indent=3)
+    com_port = input("Please inpunt serial path\n")
 
-with open('GPSdata.json', 'w') as outfile:
-    outfile.write(points_json)
-    
+    while True:
+        user_input = input("Please input device address, q to quit\n")
+        if(user_input == "q"):
+            break
+        gps_point = get_position(com_port)
+        point = {'x': gps_point.x, 'y': gps_point.y, "address": user_input}
+        points.append(point)
 
-print(points_json)
+    points_json = json.dumps(points, indent=3)
+
+    with open('GPSdata.json', 'w') as outfile:
+        outfile.write(points_json)
+        
+
+    print(points_json)
