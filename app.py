@@ -44,6 +44,10 @@ def get_position():
         except(UnicodeDecodeError):
             pass
 
+def read_json_gps_points():
+    f = open('GPSdata.json')
+    return json.load(f)
+
 if __name__ == "__main__":
 
     user_input = ""
