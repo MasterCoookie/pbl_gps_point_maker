@@ -32,17 +32,29 @@ def gps_data_to_point(data):
 
     return Point(lat, long)
 
-def get_position():
+def get_position(com_port):
+    positions = []
     gps_serial = Serial(com_port)
-    while (True):
+    NUMBER = 25
+    while len(positions) < NUMBER:
         try:
             line = str(gps_serial.readline(), encoding="ASCII")
             if "GPGGA" in line:
                 data = line.split(',')
-                # if (int(data[7]) > 0): #enough satellites
-                return(gps_data_to_point(data))
+                if (int(data[7]) > 0): #enough satellites
+                    print(len(positions))
+                    positions.append((gps_data_to_point(data)))
         except(UnicodeDecodeError):
-            pass
+            print("UnicodeDecodeError!")
+    sum_x = 0
+    sum_y = 0
+    for pos in positions:
+        sum_x += pos.x
+        sum_y += pos.y
+    sum_x /= NUMBER
+    sum_y /= NUMBER
+    return Point(sum_x, sum_y)
+
 
 def read_json_gps_points():
     f = open('GPSdata.json')
