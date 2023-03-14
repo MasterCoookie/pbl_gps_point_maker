@@ -35,7 +35,7 @@ def gps_data_to_point(data):
 def get_position(com_port):
     positions = []
     gps_serial = Serial(com_port)
-    NUMBER = 25
+    NUMBER = 50
     while len(positions) < NUMBER:
         try:
             line = str(gps_serial.readline(), encoding="ASCII")
@@ -44,16 +44,16 @@ def get_position(com_port):
                 if (int(data[7]) > 0): #enough satellites
                     print(len(positions))
                     positions.append((gps_data_to_point(data)))
+                else:
+                    print("Not enough satelites")
         except(UnicodeDecodeError):
             print("UnicodeDecodeError!")
-    sum_x = 0
-    sum_y = 0
+    x_list = []
+    y_list = []
     for pos in positions:
-        sum_x += pos.x
-        sum_y += pos.y
-    sum_x /= NUMBER
-    sum_y /= NUMBER
-    return Point(sum_x, sum_y)
+        x_list.append(pos.x)
+        y_list.append(pos.y)
+    return Point(x_list.sort()[NUMBER/2], y_list.sort()[NUMBER/2])
 
 
 def read_json_gps_points():
