@@ -3,6 +3,7 @@ from serial import Serial
 import json
 
 GPS_LIMIT = 50
+ENABLE_DEBUG_LOGS = True
 
 class Point:
     def __init__(self, x, y, address="TAG"):
@@ -55,6 +56,11 @@ def get_position(com_port):
         y_list.append(pos.y)
     x_list.sort()
     y_list.sort()
+    if ENABLE_DEBUG_LOGS:
+        f = open("debug_logs.txt", "w+")
+        for i in range(GPS_LIMIT):
+            f.write(f"#{i} x:{x_list[i]} y:{y_list[i]}")
+        f.close()
     return Point(x_list[int(GPS_LIMIT/2)], y_list[int(GPS_LIMIT/2)])
 
 
