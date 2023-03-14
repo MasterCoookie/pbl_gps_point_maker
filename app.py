@@ -2,7 +2,7 @@ import math
 from serial import Serial
 import json
 
-
+GPS_LIMIT = 50
 
 class Point:
     def __init__(self, x, y, address="TAG"):
@@ -35,8 +35,8 @@ def gps_data_to_point(data):
 def get_position(com_port):
     positions = []
     gps_serial = Serial(com_port)
-    NUMBER = 50
-    while len(positions) < NUMBER:
+    
+    while len(positions) < GPS_LIMIT:
         try:
             line = str(gps_serial.readline(), encoding="ASCII")
             if "GPGGA" in line:
@@ -53,9 +53,9 @@ def get_position(com_port):
     for pos in positions:
         x_list.append(pos.x)
         y_list.append(pos.y)
-    x_list_sorted = x_list.sort()
-    y_list_sorted = y_list.sort()
-    return Point(x_list[int(NUMBER/2)], y_list[int(NUMBER/2)])
+    x_list.sort()
+    y_list.sort()
+    return Point(x_list[int(GPS_LIMIT/2)], y_list[int(GPS_LIMIT/2)])
 
 
 def read_json_gps_points():
