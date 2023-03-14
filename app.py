@@ -45,7 +45,7 @@ def get_position(com_port):
                     print(len(positions))
                     positions.append((gps_data_to_point(data)))
                 else:
-                    print("Not enough satelites")
+                    print("Not enough satelites", data[7])
         except(UnicodeDecodeError):
             print("UnicodeDecodeError!")
     x_list = []
@@ -53,7 +53,9 @@ def get_position(com_port):
     for pos in positions:
         x_list.append(pos.x)
         y_list.append(pos.y)
-    return Point(x_list.sort()[NUMBER/2], y_list.sort()[NUMBER/2])
+    x_list_sorted = x_list.sort()
+    y_list_sorted = y_list.sort()
+    return Point(x_list[int(NUMBER/2)], y_list[int(NUMBER/2)])
 
 
 def read_json_gps_points():
