@@ -4,7 +4,7 @@ from scipy.spatial import distance_matrix
 import numpy as np
 import json
 import pandas as pd
-GPS_LIMIT = 10
+GPS_LIMIT = 120
 ENABLE_DEBUG_LOGS = True
 
 class Point:
@@ -44,7 +44,7 @@ def get_position(com_port:str,user_input:str):
             line = str(gps_serial.readline(), encoding="ASCII")
             if "GPGGA" in line:
                 data = line.split(',')
-                if (int(data[7]) >= 0): #enough satellites
+                if (int(data[7]) > 0): #enough satellites
                     print(len(positions))
                     positions.append((gps_data_to_point(data)))
                 else:
